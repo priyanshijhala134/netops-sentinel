@@ -1,12 +1,33 @@
 # flow controller
+import sys
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__)) # gets 'core'
+parent_dir = os.path.dirname(current_dir)                # gets 'netops-sentinel'
+
+sys.path.append(parent_dir)
+
 from agents.monitoring_agent import get_avg_cpu
+from agents.healing_agent import heal
+import time
 
 def monitor_state():
-    cpu=get_avg_cpu
+    print("agent started")
+    cpu=get_avg_cpu()
     
-    if cpu>0.8:
-        return "HIGH CPU"
-    return "NORMAL CPU"
+    if cpu>0.3:
+        state = "HIGH_CPU"
+    else:
+        state = "NORMAL"
+    print("Current State: ",state)
+    
+    if state!="NORMAL":
+        healed=heal(state)
+        time.sleep(5) #system to stabilise
+        cpu_after=get_avg_cpu()
+        print("CPU after healing: ", cpu_after)
+if __name__=="__main__":
+    monitor_state()
+        
 # FAKE METRICS
 # from agents.monitoring_agent import MonitoringAgent
 # from agents.monitoring_agent import MonitoringAgent
