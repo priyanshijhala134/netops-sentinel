@@ -1,1 +1,2 @@
-{"timestamp": "2026-01-11T11:01:59.829985", "incident_type": "HIGH_CPU", "cpu_before": 0.8700522412819748, "cpu_after": 0.7877220057663835, "action_taken": "heal", "success": true}
+{"timestamp": "2026-01-11T23:52:22.445782", "incident_type": "HIGH_CPU", "cpu_before": 0.9999159446527863, "cpu_after": 0.9999159446527863, "action_taken": "escalate", "success": false, "decision_reason": []}
+{"timestamp": "2026-01-11T23:53:13.996019", "incident_type": "HIGH_CPU", "cpu_before": 1.000189856637861, "cpu_after": 0.48264110538401334, "action_taken": "heal", "success": true, "decision_reason": []}

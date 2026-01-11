@@ -9,6 +9,7 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
 # ---------- Imports ----------
+from agents.llm_reasoning import decide_action_llm
 from agents.reasoning_agents import decide_action
 from core.memory import count_recent_fails
 from agents.monitoring_agent import get_avg_cpu
@@ -18,7 +19,7 @@ from core.reporter import generate_incident_report, save_report
 # ---------- Config ----------
 MAX_FAILED_ATTEMPTS = 2
 CPU_THRESHOLD = 0.75
-
+SAFE_THRESHOLD=0.6
 
 def monitor_state():
     print("agent started")
@@ -48,11 +49,12 @@ def monitor_state():
             state=state,
             cpu_before=cpu_before,
             cpu_after=None,
-            recent_failures=fails
+            recent_failures=fails,
+            safe_threshold=SAFE_THRESHOLD
         )
 
         for step in decision_payload["reasoning"]:
-            print("REASON:", step)
+            print("LLM_REASON:", step)
 
         decision = decision_payload["decision"]
 
@@ -77,7 +79,7 @@ def monitor_state():
             cpu_before=cpu_before,
             cpu_after=cpu_after,
             action_taken=decision,
-            success=cpu_after < cpu_before
+            success=cpu_after < SAFE_THRESHOLD
         )
 
         save_report(report)
