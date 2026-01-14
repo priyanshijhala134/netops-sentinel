@@ -10,7 +10,6 @@ sys.path.append(parent_dir)
 
 # ---------- Imports ----------
 from agents.llm_reasoning import decide_action_llm
-from agents.reasoning_agents import decide_action
 from core.memory import count_recent_fails
 from agents.monitoring_agent import get_avg_cpu
 from agents.healing_agent import heal
@@ -31,7 +30,7 @@ def monitor_state():
     cpu = get_avg_cpu()
     cpu_before = cpu
 
-    print("DEBUG: avg_cpu=", cpu_before)
+    print("Debugging: avg_cpu=", cpu_before)
 
     if cpu_before > CPU_THRESHOLD:
         state = "HIGH_CPU"
@@ -45,7 +44,7 @@ def monitor_state():
 
         fails = count_recent_fails("HIGH_CPU")
 
-        decision_payload = decide_action(
+        decision_payload = decide_action_llm(
             state=state,
             cpu_before=cpu_before,
             cpu_after=None,
@@ -54,7 +53,7 @@ def monitor_state():
         )
 
         for step in decision_payload["reasoning"]:
-            print("LLM_REASON:", step)
+            print("Reason:" , step)
 
         decision = decision_payload["decision"]
 
