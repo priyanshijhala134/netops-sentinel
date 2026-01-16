@@ -3,6 +3,9 @@ import os
 import json
 import pandas as pd
 
+
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent
 # -----------------------------
 # Page config (must be first)
 # -----------------------------
@@ -123,8 +126,10 @@ st.markdown(
 import json
 
 def load_demo_data():
-    with open("demo_incidents.json") as f:
+    demo_file = BASE_DIR / "demo_incidents.json"
+    with open(demo_file, "r") as f:
         return json.load(f)
+
 
 def load_live_data():
     if not os.path.exists(LOG_FILE):
@@ -139,10 +144,6 @@ else:
     incidents = load_live_data()
     if not incidents:
         st.warning("Live mode enabled, but no incidents detected yet.")
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(BASE_DIR)
-LOG_FILE = os.path.join(PROJECT_ROOT, "incidents.log")
 
 if not os.path.exists(LOG_FILE):
     st.error("No incident logs found.")
