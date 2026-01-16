@@ -12,6 +12,25 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+st.markdown("""
+### 🤖 Autonomous Ops Agent Dashboard
+
+This dashboard visualizes an **Agentic AI system** that detects infrastructure failures,
+reasons about corrective actions using an LLM under safety constraints,
+and executes self-healing workflows to reduce MTTR.
+
+**Demo Mode** shows recorded incidents.
+**Live Mode** connects to real metrics when the backend is running.
+""")
+
+
+st.sidebar.title("System Mode")
+
+mode = st.sidebar.radio(
+    "Select Mode",
+    ["Demo Mode (Default)", "Live Mode"]
+)
+
 # -----------------------------
 # Theme selector
 # -----------------------------
@@ -101,6 +120,26 @@ st.markdown(
 # -----------------------------
 # Load incidents
 # -----------------------------
+import json
+
+def load_demo_data():
+    with open("demo_incidents.json") as f:
+        return json.load(f)
+
+def load_live_data():
+    if not os.path.exists(LOG_FILE):
+        return []
+    with open(LOG_FILE) as f:
+        return [json.loads(line) for line in f]
+
+if mode.startswith("Demo"):
+    incidents = load_demo_data()
+    st.info("Running in Demo Mode — showing sample incidents.")
+else:
+    incidents = load_live_data()
+    if not incidents:
+        st.warning("Live mode enabled, but no incidents detected yet.")
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(BASE_DIR)
 LOG_FILE = os.path.join(PROJECT_ROOT, "incidents.log")

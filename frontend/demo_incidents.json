@@ -1,0 +1,18 @@
+[
+  {
+    "timestamp": "2026-01-14T16:52:45",
+    "incident_type": "HIGH_CPU",
+    "cpu_before": 1.0,
+    "cpu_after": 0.60,
+    "action_taken": "heal",
+    "success": true
+  },
+  {
+    "timestamp": "2026-01-14T17:18:53",
+    "incident_type": "HIGH_CPU",
+    "cpu_before": 0.85,
+    "cpu_after": 0.62,
+    "action_taken": "heal",
+    "success": true
+  }
+]
