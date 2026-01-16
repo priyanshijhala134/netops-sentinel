@@ -6,6 +6,8 @@ import pandas as pd
 
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = os.path.dirname(BASE_DIR)
+LOG_FILE = os.path.join(PROJECT_ROOT, "incidents.log")
 # -----------------------------
 # Page config (must be first)
 # -----------------------------
