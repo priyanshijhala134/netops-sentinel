@@ -5,13 +5,6 @@
 
 Autonomous Ops Agent is a GenAI-powered, policy-constrained operations system that **detects infrastructure anomalies, reasons about corrective actions, and executes safe self-healing workflows** with full observability and auditability.
 
-The system follows a **deterministic-first, LLM-as-planner** philosophy:
-
-* **Detection** is rule-based and metrics-driven
-* **Decision-making** is assisted by an LLM under strict safety policies
-* **Execution** is automated but reversible
-
----
 ---
 ## Live Demo: "https://autonomous-sre-agent.streamlit.app/"
 ---
@@ -30,47 +23,15 @@ This project demonstrates how **agentic AI** can:
 
 ## Architecture
 
-### High-Level Flow
+Monitor → Diagnose → Decide (LLM + Safety) → Act → Verify → Report
 
-1. **Monitoring Agent** pulls CPU metrics from Prometheus
-2. **State Evaluator** determines NORMAL vs HIGH_CPU
-3. **Decision Agent (LLM)** proposes an action under policy constraints
-4. **Execution Agent** performs healing (service restart)
-5. **Verification Agent** validates recovery
-6. **Reporter** logs incident + exposes dashboard
+* LangGraph for agent state transitions
+* LLM Reasoning for decision justification
+* Safety Layer to prevent unsafe actions
+* Human-readable audit trail for every incident
 
 ---
 
-## Agent Roles
-
-### Monitoring Agent
-
-* Queries Prometheus
-* Computes average CPU usage
-* Emits structured signals (cpu_before, is_high)
-
-### Decision Agent (LLM)
-
-* Considers system state + recent failures
-* Outputs constrained actions: `heal`, `escalate`, `do_nothing`
-* Never executes actions directly
-
-### Healing Agent
-
-* Executes OS-level remediation (nginx restart)
-* Implements rollback-safe commands
-
-### Verification Agent
-
-* Re-checks metrics post-action
-* Determines success/failure
-
-### Reporter
-
-* Writes structured incident logs (JSONL)
-* Feeds Streamlit dashboard
-
----
 
 ## Safety & Guardrails
 
@@ -78,14 +39,6 @@ This project demonstrates how **agentic AI** can:
 * Failure memory to prevent infinite loops
 * Escalation after repeated failures
 * Deterministic overrides over LLM output
-
----
-
-## Chaos Scenarios Tested
-
-* Sustained CPU saturation
-* Repeated failed recoveries
-* LLM decision under partial information
 
 ---
 
